@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Проверка текстового сообщения на корректность расстановки скобок.
@@ -14,9 +12,7 @@ import org.slf4j.LoggerFactory;
  * @since 1.0.0
  */
 @ApplicationScoped
-public class BracersValidator implements MessageValidator<String> {
-
-    private static final Logger logger = LoggerFactory.getLogger(BracersValidator.class);
+public class BracketsValidator implements MessageValidator<String> {
 
     /**
      * Проверка текстового сообщения на корректность расстановки скобок. Данный метод реализует на самый лучший алгоритм проверки, а именно O(n), зато позволяет легко определить
@@ -48,17 +44,22 @@ public class BracersValidator implements MessageValidator<String> {
             switch (message.charAt(i)) {
                 case '(':
                     stack.push(i);
+                    symbol = false;
                     break;
                 case ')':
-                    if (stack.isEmpty() || !symbol) {
-                        throw new ValidationException("Invalid character ')'; position: " + i + ";");
+                    if (stack.isEmpty()) {
+                        throw new ValidationException("Invalid character ')'; position: " + (i + 1) + ";");
+                    }
+                    if (!symbol) {
+                        throw new ValidationException("Empty brackets at position: " + (i - 1) + ";");
                     }
                     stack.pop();
                     break;
+                case ' ':
                 case '\u00A0':
                 case '\u2007':
                 case '\u202F':
-                case '\u0009':
+                case '\t':
                 case '\n':
                 case '\u000B':
                 case '\u000C':
@@ -73,7 +74,7 @@ public class BracersValidator implements MessageValidator<String> {
             }
         }
         if (!stack.isEmpty()) {
-            throw new ValidationException("Invalid character '('; position: " + stack.pop() + ";");
+            throw new ValidationException("Invalid character '('; position: " + (stack.pop() + 1) + ";");
         }
     }
 }

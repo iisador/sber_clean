@@ -1,7 +1,7 @@
 package ru.isador.sber.clean.analyzers;
 
 /**
- * Исключительная ситуация в процесса проверки сообщения.
+ * Исключительная ситуация в процессе проверки сообщения.
  *
  * @since 1.0.0
  */
@@ -14,7 +14,7 @@ public class ValidationException extends Exception {
      *
      * @since 1.0.0
      */
-    protected ValidationException(String message) {
+    public ValidationException(String message) {
         super(message, null, false, false);
     }
 }

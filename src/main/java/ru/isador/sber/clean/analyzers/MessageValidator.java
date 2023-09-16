@@ -3,6 +3,8 @@ package ru.isador.sber.clean.analyzers;
 /**
  * Общий интерфейс, определяющий набор правил, для анализа сообщения.
  *
+ * @param <T> тип проверяемого сообщения.
+ *
  * @since 1.0.0
  */
 public interface MessageValidator<T> {

@@ -1,0 +1,413 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+
+    <!-- Все исходники в UTF-8-->
+    <property name="charset" value="UTF-8"/>
+
+    <!-- Показываем варнинги-->
+    <property name="severity" value="warning"/>
+
+    <!-- Проверяем java, properties и xml файлы-->
+    <property name="fileExtensions" value="java, properties, xml"/>
+
+    <!-- Отступ = 4 пробела -->
+    <property name="tabWidth" value="4"/>
+
+    <!-- Исключаем из проверки module-info.java -->
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value="module\-info\.java$"/>
+    </module>
+
+    <!-- Валидируем ресурсБандлы -->
+    <module name="Translation"/>
+
+    <!-- Проверяем, что в исхдниках нет табов -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <!-- Длина строки для исходников должна быть < 180 символов.-->
+    <!-- Не распространяется на ссылки, пакеты и импорты -->
+    <module name="LineLength">
+        <property name="fileExtensions" value="java"/>
+        <property name="max" value="180"/>
+        <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+    </module>
+
+    <!-- Ругаемся на побелы и табы в конце строки. -->
+    <module name="RegexpSingleline">
+        <property name="format" value="\s+$"/>
+        <property name="minimum" value="0"/>
+        <property name="maximum" value="0"/>
+        <property name="message" value="Line has trailing spaces."/>
+    </module>
+
+    <module name="TreeWalker">
+
+        <!-- ПРАВИЛА JAVADOC -->
+
+        <!-- Ругаемся, если жавадок криво расположен -->
+        <module name="InvalidJavadocPosition"/>
+
+        <!-- Проверяем что жавадоки начинаются со второй строки -->
+        <module name="JavadocContentLocation">
+            <property name="location" value="second_line"/>
+        </module>
+
+        <!-- Определяем порядок тэгов в жавадоках-->
+        <module name="AtclauseOrder">
+            <property name="tagOrder" value="@param"/>
+            <property name="tagOrder" value="@return"/>
+            <property name="tagOrder" value="@throws"/>
+            <property name="tagOrder" value="@see"/>
+            <property name="tagOrder" value="@since"/>
+            <property name="tagOrder" value="@deprecated"/>
+
+            <property name="target" value="CLASS_DEF"/>
+            <property name="target" value="INTERFACE_DEF"/>
+            <property name="target" value="ENUM_DEF"/>
+            <property name="target" value="METHOD_DEF"/>
+            <property name="target" value="CTOR_DEF"/>
+            <property name="target" value="VARIABLE_DEF"/>
+        </module>
+
+        <!-- Описание обязатльно для публичных классов, интерфейсов, аннотаций, енамов -->
+        <module name="JavadocType">
+            <property name="scope" value="public"/>
+        </module>
+
+        <!-- Проверка, что строки в тэгах на одном уровне -->
+        <module name="JavadocTagContinuationIndentation"/>
+
+        <!-- Проверка, что тэги сопровождены описанием -->
+        <module name="NonEmptyAtclauseDescription"/>
+
+        <!-- Проверка отступов описания тэгов -->
+        <module name="JavadocTagContinuationIndentation"/>
+
+        <!-- Проверяем, что для аннотации Deprecated есть описание в жавадоке -->
+        <module name="MissingDeprecated"/>
+
+        <!-- Жавадок должен быть на паблик методы, кроме геттеров\сеттеров.
+         На паблик конструторы не обязательно жавадок -->
+        <module name="MissingJavadocMethod">
+            <property name="scope" value="public"/>
+            <property name="allowedAnnotations" value="Override, Test, Inject"/>
+            <property name="ignoreMethodNamesRegex"
+                      value="(^get[A-Z].+|^set[A-Z].+|^is[A-Z].+|^add[A-Z].+|^with[A-Z].+|^find[A-Z].+)"/>
+            <property name="tokens" value="METHOD_DEF, ANNOTATION_FIELD_DEF"/>
+        </module>
+
+        <!-- Небольшие приватные типы можно не документировать -->
+        <module name="MissingJavadocType"/>
+
+        <!-- Проверка однострочных жавадоков -->
+        <module name="SingleLineJavadoc">
+            <property name="ignoreInlineTags" value="false"/>
+        </module>
+
+
+        <!-- ПРАВИЛА НА ИМПОРТЫ -->
+
+        <!-- Не используем ломбок -->
+        <module name="IllegalImport">
+            <property name="regexp" value="true"/>
+            <property name="illegalPkgs" value="^lombok.*"/>
+        </module>
+
+        <!-- Импорт пакета - нельзя -->
+        <module name="AvoidStarImport"/>
+
+        <!-- Определение пакета, импорты и статические импорты не переносятся -->
+        <module name="NoLineWrap">
+            <property name="tokens" value="PACKAGE_DEF, IMPORT, STATIC_IMPORT"/>
+        </module>
+
+        <!-- Проверка порядка в импортах -->
+        <module name="CustomImportOrder">
+            <property name="sortImportsInGroupAlphabetically" value="true"/>
+            <property name="separateLineBetweenGroups" value="true"/>
+            <property name="thirdPartyPackageRegExp" value="com\.*|org\.*|jakarta\.*|javafx\.*"/>
+            <property name="specialImportsRegExp" value="ru\.iasdor\.*"/>
+            <property name="customImportOrderRules"
+                      value="STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE###SPECIAL_IMPORTS###STATIC"/>
+            <property name="tokens" value="IMPORT, STATIC_IMPORT, PACKAGE_DEF"/>
+        </module>
+
+
+        <!-- Проверяем, что имя файла = имя класса -->
+        <module name="OuterTypeFilename"/>
+
+        <!-- Проверка на запрещённый юникод -->
+        <module name="IllegalTokenText">
+            <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
+            <property name="format"
+                      value="\\u00(09|0(a|A)|0(c|C)|0(d|D)|22|27|5(C|c))|\\(0(10|11|12|14|15|42|47)|134)"/>
+            <property name="message"
+                      value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>
+        </module>
+
+        <!-- Юникод можно использовать только с пометкой в комментарии -->
+        <module name="AvoidEscapedUnicodeCharacters">
+            <property name="allowEscapesForControlCharacters" value="true"/>
+            <property name="allowIfAllCharactersEscaped" value="true"/>
+        </module>
+
+        <!-- Проверка, что нет других классов, на уровне с основным -->
+        <module name="OneTopLevelClass"/>
+
+        <!-- Проверка, что нет пустых блоков после циклов, траев, операторов выбора и синхронизированных блоков -->
+        <module name="EmptyBlock">
+            <property name="option" value="TEXT"/>
+            <property name="tokens"
+                      value="LITERAL_WHILE, LITERAL_DO, LITERAL_IF,
+                      LITERAL_ELSE, LITERAL_FOR"/>
+        </module>
+
+        <!-- Проверка, что нет пустых catch блоков, кроме переменной ignore в сигнатуре -->
+        <module name="EmptyCatchBlock">
+            <property name="exceptionVariableName" value="ignore"/>
+        </module>
+
+        <!-- Проверка на наличие блока скобок -->
+        <module name="NeedBraces">
+            <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_IF, LITERAL_WHILE"/>
+        </module>
+
+        <!-- Открывающая скобка должна быть на строке с опредением -->
+        <module name="LeftCurly">
+            <property name="tokens" value="ANNOTATION_DEF, CLASS_DEF, CTOR_DEF, ENUM_CONSTANT_DEF, ENUM_DEF,
+                    INTERFACE_DEF, LITERAL_DEFAULT,
+                    LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_IF,
+                    LITERAL_WHILE, METHOD_DEF, OBJBLOCK, STATIC_INIT"/>
+        </module>
+
+        <!-- После определения класса, метода, конструктора, циклов for\while, статического блока -->
+        <!-- аннотаций и енамов, закрывающая скобка должна быть на новой строке -->
+        <module name="RightCurly">
+            <property name="id" value="RightCurlyAlone"/>
+            <property name="option" value="alone"/>
+            <property name="tokens"
+                      value="CLASS_DEF, METHOD_DEF, CTOR_DEF, LITERAL_FOR, LITERAL_WHILE, STATIC_INIT,
+                    INSTANCE_INIT, ANNOTATION_DEF, ENUM_DEF"/>
+        </module>
+
+        <!-- А если это if\else\do\try\catch\finally, то на той же строке-->
+        <module name="RightCurly">
+            <property name="id" value="RightCurlySame"/>
+            <property name="tokens" value="LITERAL_IF, LITERAL_ELSE, LITERAL_DO"/>
+        </module>
+
+        <!-- Пробел после... -->
+        <module name="WhitespaceAfter">
+            <property name="tokens"
+                      value="COMMA, SEMI, TYPECAST, LITERAL_IF, LITERAL_ELSE, LITERAL_WHILE,
+                      LITERAL_DO, LITERAL_FOR, DO_WHILE"/>
+        </module>
+
+        <!-- Проверка, что перечисленные токены окружены свободным пространством -->
+        <module name="WhitespaceAround">
+            <property name="allowEmptyConstructors" value="true"/>
+            <property name="allowEmptyMethods" value="true"/>
+            <property name="allowEmptyTypes" value="true"/>
+            <property name="allowEmptyLoops" value="true"/>
+            <property name="tokens" value="ASSIGN, BAND, BAND_ASSIGN, BOR, BOR_ASSIGN, BSR, BSR_ASSIGN, BXOR,
+                    BXOR_ASSIGN, COLON, DIV, DIV_ASSIGN, DO_WHILE, EQUAL, GE, GT, LAND,
+                    LCURLY, LE, LITERAL_DO, LITERAL_ELSE,
+                    LITERAL_FOR, LITERAL_IF,
+                    LITERAL_WHILE, LOR, LT, MINUS, MINUS_ASSIGN, MOD, MOD_ASSIGN,
+                    NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, SL, SLIST, SL_ASSIGN, SR,
+                    SR_ASSIGN, STAR, STAR_ASSIGN, LITERAL_ASSERT, TYPE_EXTENSION_AND"/>
+            <message key="ws.notFollowed"
+                     value="WhitespaceAround: ''{0}'' is not followed by whitespace. Empty blocks may only be represented as '{}' when not part of a multi-block statement (4.1.3)"/>
+            <message key="ws.notPreceded"
+                     value="WhitespaceAround: ''{0}'' is not preceded with whitespace."/>
+        </module>
+
+        <!-- Одно выражение на строку -->
+        <module name="OneStatementPerLine"/>
+
+        <!-- Определение нескольких перменных одной строкой запрещено -->
+        <module name="MultipleVariableDeclarations"/>
+
+        <!-- Определение массива после типа, а не после имени переменной -->
+        <module name="ArrayTypeStyle"/>
+
+        <!-- Если свич, то обязательно с default -->
+        <module name="MissingSwitchDefault"/>
+
+        <!-- Проверка case вариантов на наличие стоп слов -->
+        <!-- case варианты можно объединить комментарием //fallthrough -->
+        <module name="FallThrough"/>
+
+        <!-- При определении long - в конце ставим L -->
+        <module name="UpperEll"/>
+
+        <!-- Проверка порядка модификаторов -->
+        <module name="ModifierOrder"/>
+
+        <!-- Проверка разделения блоков пустой строкой -->
+        <module name="EmptyLineSeparator">
+            <property name="tokens" value="PACKAGE_DEF, IMPORT, STATIC_IMPORT, CLASS_DEF, INTERFACE_DEF, ENUM_DEF,
+                    STATIC_INIT, INSTANCE_INIT, METHOD_DEF, CTOR_DEF, VARIABLE_DEF"/>
+            <property name="allowNoEmptyLineBetweenFields" value="true"/>
+        </module>
+
+        <!-- Проверка переносов строк со знаками препинания -->
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapDot"/>
+            <property name="tokens" value="DOT"/>
+            <property name="option" value="nl"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapComma"/>
+            <property name="tokens" value="COMMA"/>
+            <property name="option" value="EOL"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapArrayDeclarator"/>
+            <property name="tokens" value="ARRAY_DECLARATOR"/>
+            <property name="option" value="EOL"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapMethodRef"/>
+            <property name="tokens" value="METHOD_REF"/>
+            <property name="option" value="nl"/>
+        </module>
+
+        <!-- Проверка именования пакета -->
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+            <message key="name.invalidPattern" value="Package name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+
+        <!-- Проверка именования типа -->
+        <module name="TypeName">
+            <property name="tokens" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF"/>
+            <message key="name.invalidPattern" value="Type name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+
+        <!-- Проверка именования полей класса -->
+        <module name="MemberName">
+            <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern" value="Member name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+
+        <!-- Проверка именования параметров метода -->
+        <module name="ParameterName">
+            <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
+            <message key="name.invalidPattern" value="Parameter name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+
+        <!-- Проверка именования параметров в блоке catch -->
+        <module name="CatchParameterName">
+            <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
+            <message key="name.invalidPattern" value="Catch parameter name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+
+        <!-- Проверка именования локальной переменной -->
+        <module name="LocalVariableName">
+            <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
+            <message key="name.invalidPattern" value="Local variable name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+
+        <!-- Проверка именования параметризованного класса -->
+        <module name="ClassTypeParameterName">
+            <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
+            <message key="name.invalidPattern" value="Class type name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+
+        <!-- Проверка именования параметризованного метода -->
+        <module name="MethodTypeParameterName">
+            <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
+            <message key="name.invalidPattern" value="Method type name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+
+        <!-- Проверка именования параметризованного интерфейса -->
+        <module name="InterfaceTypeParameterName">
+            <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
+            <message key="name.invalidPattern" value="Interface type name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+
+        <!-- Проверка именования методов -->
+        <module name="MethodName">
+            <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>
+            <message key="name.invalidPattern" value="Method name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+
+        <!-- Не переопределяем метод finalize -->
+        <module name="NoFinalizer"/>
+
+        <!-- Проверка пробелов в дженериках -->
+        <module name="GenericWhitespace">
+            <message key="ws.followed" value="GenericWhitespace ''{0}'' is followed by whitespace."/>
+            <message key="ws.preceded" value="GenericWhitespace ''{0}'' is preceded with whitespace."/>
+            <message key="ws.illegalFollow" value="GenericWhitespace ''{0}'' should followed by whitespace."/>
+            <message key="ws.notPreceded" value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
+        </module>
+
+        <!-- Проверка корректных отступов -->
+        <module name="Indentation"/>
+
+        <!-- Проверка именования классов\интерфейсов и т.д. в camelCase -->
+        <module name="AbbreviationAsWordInName">
+            <property name="ignoreFinal" value="false"/>
+            <property name="allowedAbbreviationLength" value="1"/>
+            <property name="tokens" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF,
+                    PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF"/>
+        </module>
+
+        <!-- Перегруженные методы расположены вместе -->
+        <module name="OverloadMethodsDeclarationOrder"/>
+
+        <!-- Инициализация переменной должна проиходить непосредственно перед её использованием -->
+        <module name="VariableDeclarationUsageDistance"/>
+
+        <!-- Проверка на свободное пространство между токенами и скобками -->
+        <module name="MethodParamPad">
+            <property name="tokens" value="CTOR_DEF, LITERAL_NEW, METHOD_CALL, METHOD_DEF, SUPER_CTOR_CALL,
+                                    ENUM_CONSTANT_DEF"/>
+        </module>
+
+        <!-- Проверка на свободное пространство перед знаками препинания -->
+        <module name="NoWhitespaceBefore">
+            <property name="tokens" value="COMMA, SEMI, POST_INC, POST_DEC, DOT, METHOD_REF"/>
+            <property name="allowLineBreaks" value="true"/>
+        </module>
+
+        <!-- Проверка на отступ закрывающих скобок -->
+        <module name="ParenPad">
+            <property name="tokens" value="ANNOTATION, ANNOTATION_FIELD_DEF, CTOR_CALL, CTOR_DEF, DOT,
+                    ENUM_CONSTANT_DEF, EXPR, LITERAL_DO, LITERAL_FOR, LITERAL_IF,
+                    LITERAL_NEW, LITERAL_WHILE, METHOD_CALL, METHOD_DEF, QUESTION, RESOURCE_SPECIFICATION,
+                     SUPER_CTOR_CALL"/>
+        </module>
+
+        <!-- Проверка на свободное пространство между операторами -->
+        <module name="OperatorWrap">
+            <property name="option" value="NL"/>
+            <property name="tokens" value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR,
+                    LT, MINUS, MOD, NOT_EQUAL, QUESTION, SL, SR, STAR, METHOD_REF "/>
+        </module>
+
+        <!-- Аннотации перед определением -->
+        <module name="AnnotationLocation">
+            <property name="id" value="AnnotationLocationMostCases"/>
+            <property name="tokens" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF"/>
+        </module>
+
+        <!-- Аннотации перед переменными могут быть на одной строке -->
+        <module name="AnnotationLocation">
+            <property name="id" value="AnnotationLocationVariables"/>
+            <property name="tokens" value="VARIABLE_DEF"/>
+            <property name="allowSamelineMultipleAnnotations" value="true"/>
+        </module>
+
+        <!-- Проверка отступов для коментариев -->
+        <module name="CommentsIndentation">
+            <property name="tokens" value="SINGLE_LINE_COMMENT, BLOCK_COMMENT_BEGIN"/>
+        </module>
+    </module>
+</module>

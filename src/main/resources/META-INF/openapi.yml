@@ -1,0 +1,53 @@
+openapi: '3.0.3'
+info:
+  title: 'Проверка сообщений'
+  description: 'Проверка входящих сообщений на корректность выставления скобок'
+  version: '1.0.0'
+
+paths:
+  /api/checkBrackets:
+    post:
+      summary: 'Проверка текста на корректность'
+      operationId: 'checkBrackets'
+      requestBody:
+        required: true
+        description: 'Сообщение для проверки'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextMessage'
+
+      responses:
+        '200':
+          description: 'Проверка прошла успешно'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResult'
+        '400':
+          description: 'Запрос содержит ошибку (в большинстве случаев это неправильный json)'
+        '415':
+          description: 'Не поддерживаемый тип сообщения'
+        '500':
+          description: 'Непредвиденная серверная ошибка'
+
+components:
+  schemas:
+    TextMessage:
+      type: object
+      description: 'Входящее текстовое сообщение'
+      properties:
+        text:
+          type: string
+          required: true
+          example: 'Вчера я отправился в поход в лес (это мое любимое место для отдыха) вместе с друзьями. Мы выбрали маршрут, который проходил через горные потоки и поля (для разнообразия). В начале пути погода была отличной, солнце светило ярко, и птицы радостно пели. Однако, когда мы подошли ближе к вершине горы, небо стало покрываться облаками, (как будто природа готовила нам небольшой сюрприз). Несмотря на это, виды были захватывающими, особенно когда мы достигли высшей точки и увидели прекрасный вид на долину (я почувствовал, что все усилия стоили того).'
+          description: 'Тело сообщения'
+
+    ValidationResult:
+      type: object
+      description: 'Результат проверки сообщения'
+      properties:
+        isCorrect:
+          type: boolean
+          required: true
+          description: 'True - проверка сообщения прошла успешно, скобки расставлены корректно. False - проверка прошла успешно, корректность расстановки скобок нарушена'

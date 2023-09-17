@@ -23,8 +23,8 @@ public class TextMessageBuilder extends StdDeserializer<TextMessage> {
     @Override
     public TextMessage deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         var n = p.getCodec().readTree(p);
-        JsonNode content = (TextNode) n.get("text");
-        if (content == null) {
+        JsonNode content = (JsonNode) n.get("text");
+        if (content == null || content.asText().equals("null")) {
             return new TextMessage(); // TODO: В тз не указано как поступать с некорректными запросами, поэтому пока их просто пропускаем
         }
 

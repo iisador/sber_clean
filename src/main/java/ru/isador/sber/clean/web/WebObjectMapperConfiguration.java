@@ -9,7 +9,7 @@ import ru.isador.sber.clean.web.massages.TextMessage;
 import ru.isador.sber.clean.web.massages.TextMessageBuilder;
 
 /**
- * Дополнительная настройка для корректной десериализации входяших сообщений.
+ * Дополнительная настройка для корректной десериализации входящих сообщений.
  *
  * @since 1.0.0
  */

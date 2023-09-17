@@ -2,11 +2,8 @@ package ru.isador.sber.clean.web;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import ru.isador.sber.clean.analyzers.MessageValidator;
 import ru.isador.sber.clean.analyzers.ValidationException;
-import ru.isador.sber.clean.web.massages.Message;
 import ru.isador.sber.clean.web.massages.TextMessage;
 
 import static org.junit.jupiter.api.Assertions.*;

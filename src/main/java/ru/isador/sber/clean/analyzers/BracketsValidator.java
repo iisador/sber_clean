@@ -51,7 +51,7 @@ public class BracketsValidator implements MessageValidator<String> {
                         throw new ValidationException("Invalid character ')'; position: " + (i + 1) + ";");
                     }
                     if (!symbol) {
-                        throw new ValidationException("Empty brackets at position: " + (i - 1) + ";");
+                        throw new ValidationException("Empty brackets at position: " + (stack.pop() + 1) + ";");
                     }
                     stack.pop();
                     break;

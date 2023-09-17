@@ -96,7 +96,7 @@ class BracketsValidatorTest {
         var e = assertThrows(ValidationException.class, () -> validator.validate(text));
 
         assertNotNull(e, "ValidationException should be thrown");
-        assertEquals(e.getMessage(), "Empty brackets at position: 38;", "Invalid exception message");
+        assertEquals(e.getMessage(), "Empty brackets at position: 39;", "Invalid exception message");
     }
 
     @Test

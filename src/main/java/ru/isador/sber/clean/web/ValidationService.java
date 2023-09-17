@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import ru.isador.sber.clean.analyzers.MessageValidator;
 import ru.isador.sber.clean.analyzers.ValidationException;
-import ru.isador.sber.clean.web.massages.Message;
+import ru.isador.sber.clean.web.messages.Message;
 
 /**
  * Сервис проверки входящего сообщения.

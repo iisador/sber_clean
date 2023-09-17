@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.isador.sber.clean.analyzers.MessageValidator;
 import ru.isador.sber.clean.analyzers.ValidationException;
-import ru.isador.sber.clean.web.massages.TextMessage;
+import ru.isador.sber.clean.web.messages.TextMessage;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

@@ -1,4 +1,4 @@
-package ru.isador.sber.clean.web.massages;
+package ru.isador.sber.clean.web.messages;
 
 /**
  * Простое представление текстового сообщения.

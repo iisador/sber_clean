@@ -6,7 +6,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-import ru.isador.sber.clean.web.massages.TextMessage;
+import ru.isador.sber.clean.web.messages.TextMessage;
 
 /**
  * Контроллер предоставляющий внешнее API для доступа к функционалу проверки.

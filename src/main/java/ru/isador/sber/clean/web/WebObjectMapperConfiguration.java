@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import jakarta.inject.Singleton;
 
 import io.quarkus.jackson.ObjectMapperCustomizer;
-import ru.isador.sber.clean.web.massages.TextMessage;
-import ru.isador.sber.clean.web.massages.TextMessageBuilder;
+import ru.isador.sber.clean.web.messages.TextMessage;
+import ru.isador.sber.clean.web.messages.TextMessageBuilder;
 
 /**
  * Дополнительная настройка для корректной десериализации входящих сообщений.

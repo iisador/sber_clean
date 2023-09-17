@@ -3,4 +3,4 @@
  *
  * @since 1.0.0
  */
-package ru.isador.sber.clean.web.massages;
+package ru.isador.sber.clean.web.messages;
